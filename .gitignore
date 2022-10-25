@@ -1,0 +1,6 @@
+# ignore gcc generated assembly
+*.s
+# ignore all directories
+**/ 
+# ignore temp files
+*.swp
