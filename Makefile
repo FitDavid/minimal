@@ -11,5 +11,8 @@ isr: isr.asm
 main: main.c main.h
 	arm-none-eabi-gcc $(CFLAGS) -nostartfiles -o 'obj/main.o' main.c
 
+asm: main.c
+	arm-none-eabi-gcc -Wall -mcpu=cortex-m4 -mthumb -S main.c
+
 clean:
 	rm obj/* *.s a.out

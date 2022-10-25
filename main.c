@@ -17,7 +17,8 @@ int main()
 {
 		*RCC_AHB1ENR = 0x1;
 		*GPIOA_MODER |= 0x400;
-
+		SysTick_Handler();
+		SVC_Handler();
 		while(1)
 		{
 				*GPIOA_ODR = 0x20;
@@ -48,16 +49,4 @@ void delay(volatile uint32_t count)
 {
 		while(count--);
 }
-
-
-void SysTick_Handler()
-{
-
-}
-
-void SVC_Handler()
-{
-
-}
-
 
