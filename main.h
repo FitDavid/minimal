@@ -1,4 +1,3 @@
-
 typedef unsigned long uint32_t;
 typedef unsigned char uint8_t;
 
@@ -45,11 +44,19 @@ struct stackframe_t
 
 struct thread_t
 {
-	uint32_t sp;
+	uint32_t * sp;
+};
+
+struct threadtbl_t
+{
+	struct thread_t tbl[NTHREADS];
 	uint32_t lock;
+	uint32_t running;
 };
 
 int main();
+void ledon();
+void ledoff();
 void SVC_Handler();
 void SysTick_Handler();
 void delay(volatile uint32_t);

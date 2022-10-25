@@ -11,11 +11,18 @@ uint32_t *vtable[100] __attribute__((section(".isr_vector"))) =
 uint8_t minsp1[STACK_SIZE] __attribute__ ((aligned(8))); // pointer to minimal sp
 uint8_t minsp2[STACK_SIZE] __attribute__ ((aligned(8))); // aligned to 8 byte boundary
 
-uint32_t running = 0; // index of currently running thread
+struct threadtbl_t * threads;
 
 int main()
 {
-		*RCC_AHB1ENR = 0x1;
+		struct stackframe_t * sfledon = (struct stackframe_t*)minsp1 + STACK_SIZE - sizeof(struct stackframe_t);
+	struct stackframe_t  * sfledoff = (struct stackframe_t*)minsp2 + STACK_SIZE - sizeof(struct stackframe_t);
+	sfledon->retaddr = (uint32_t)ledon; //
+	sfledoff->retaddr = (uint32_t)ledoff; //
+	threads->tbl[0].sp = (uint32_t*) sfledon;
+	threads->tbl[1].sp = (uint32_t*) sfledoff;
+	 // disable fpu
+	*RCC_AHB1ENR = 0x1;
 		*GPIOA_MODER |= 0x400;
 		SysTick_Handler();
 		SVC_Handler();
