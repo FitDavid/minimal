@@ -8,7 +8,7 @@ link: isr main
 isr: isr.asm
 	arm-none-eabi-as $(CFLAGS) -o 'obj/isr.o' isr.asm
 
-main: main.c
+main: main.c main.h
 	arm-none-eabi-gcc $(CFLAGS) -nostartfiles -o 'obj/main.o' main.c
 
 clean:

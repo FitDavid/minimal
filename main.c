@@ -1,35 +1,4 @@
-typedef unsigned long uint32_t;
-
-#define FLASH_BASE  0x08000000
-#define SRAM_BASE   0x20000000
-#define PERIPH_BASE 0x40000000
-
-#define SRAM_SIZE 128*1024
-#define SRAM_END (SRAM_BASE + SRAM_SIZE)
-
-#define APB1PERIPH_BASE       PERIPH_BASE
-#define APB2PERIPH_BASE       (PERIPH_BASE + 0x00010000UL)
-#define AHB1PERIPH_BASE       (PERIPH_BASE + 0x00020000UL)
-#define AHB2PERIPH_BASE       (PERIPH_BASE + 0x10000000UL)
-#define GPIOA_BASE            (AHB1PERIPH_BASE + 0x0000UL)
-#define GPIOB_BASE            (AHB1PERIPH_BASE + 0x0400UL)
-#define GPIOC_BASE            (AHB1PERIPH_BASE + 0x0800UL)
-#define GPIOD_BASE            (AHB1PERIPH_BASE + 0x0C00UL)
-#define GPIOE_BASE            (AHB1PERIPH_BASE + 0x1000UL)
-#define GPIOF_BASE            (AHB1PERIPH_BASE + 0x1400UL)
-#define GPIOG_BASE            (AHB1PERIPH_BASE + 0x1800UL)
-#define GPIOH_BASE            (AHB1PERIPH_BASE + 0x1C00UL)
-#define CRC_BASE              (AHB1PERIPH_BASE + 0x3000UL)
-#define RCC_BASE              (AHB1PERIPH_BASE + 0x3800UL)
-
-#define RCC_AHB1ENR ((uint32_t *)(RCC_BASE + 0x30UL))
-#define GPIOA_MODER ((uint32_t *)(GPIOA_BASE + 0x00))
-#define GPIOA_ODR ((uint32_t *)(GPIOA_BASE + 0x14))
-
-int main();
-void SVC_Handler();
-void SysTick_Handler();
-void delay(volatile uint32_t);
+#include "main.h"
 
 uint32_t *vtable[100] __attribute__((section(".isr_vector"))) =
 {
@@ -39,6 +8,10 @@ uint32_t *vtable[100] __attribute__((section(".isr_vector"))) =
 		[15] = (uint32_t *)SysTick_Handler
 };
 
+uint8_t minsp1[STACK_SIZE] __attribute__ ((aligned(8))); // pointer to minimal sp
+uint8_t minsp2[STACK_SIZE] __attribute__ ((aligned(8))); // aligned to 8 byte boundary
+
+uint32_t running = 0; // index of currently running thread
 
 int main()
 {
@@ -55,6 +28,27 @@ int main()
 		}
 }
 
+void ledon()
+{
+	while(1)
+	{
+
+	}
+}
+
+void ledoff()
+{
+	while(1)
+	{
+
+	}
+}
+
+void delay(volatile uint32_t count)
+{
+		while(count--);
+}
+
 
 void SysTick_Handler()
 {
@@ -66,7 +60,4 @@ void SVC_Handler()
 
 }
 
-void delay(volatile uint32_t count)
-{
-		while(count--);
-}
+
