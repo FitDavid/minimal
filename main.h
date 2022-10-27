@@ -32,13 +32,13 @@ typedef unsigned char uint8_t;
 
 struct stackframe_t
 {
-	uint32_t r0;
-	uint32_t r1;
-	uint32_t r2;
-	uint32_t r3;
-	uint32_t r12;
-	uint32_t r14; // LR
-	uint32_t retaddr;
+	uint32_t r0; // 0
+	uint32_t r1; // 1
+	uint32_t r2; // 2
+	uint32_t r3; // 3
+	uint32_t r12; // 4
+	uint32_t r14; // LR, 5
+	uint32_t* retaddr; // 6
 	uint32_t xpsr;
 };
 
