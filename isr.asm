@@ -6,7 +6,7 @@
 .equ RETADDR, 6*4
 
 SVC_Handler:
-mov pc, [sp, #RETADDR] 
+	bx lr
 
 SysTick_Handler:
-mov pc, lr
+	bx lr
