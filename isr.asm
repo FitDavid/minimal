@@ -5,8 +5,8 @@
 .thumb
 .equ RETADDR, 6*4
 
-SVC_Handler:
-	bx lr
-
 SysTick_Handler:
-	bx lr
+	ldr	pc, [sp , #RETADDR]
+SVC_Handler:
+	ldr	pc, [sp , #RETADDR]
+

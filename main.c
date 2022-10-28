@@ -24,7 +24,7 @@ int main()
 		// disable fpu
 		*RCC_AHB1ENR = 0x1;
 		*GPIOA_MODER |= 0x400;
-		asm("svc #0");
+		asm("svc 0");
 		while(1)
 		{
 				*GPIOA_ODR = 0x20;
