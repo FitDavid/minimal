@@ -4,6 +4,9 @@ uint32_t *vtable[100] __attribute__((section(".isr_vector"))) =
 {
 		(uint32_t *)SRAM_END, // MSP
 		(uint32_t *)main,
+		[3] = (uint32_t*) HardFault_Handler,
+		[5] = (uint32_t*) BusFault_Handler,
+		[6] = (uint32_t*) UsageFault_Handler,
 		[11] = (uint32_t *)SVC_Handler,
 		[15] = (uint32_t *)SysTick_Handler
 };
@@ -24,14 +27,14 @@ int main()
 		// disable fpu
 		*RCC_AHB1ENR = 0x1;
 		*GPIOA_MODER |= 0x400;
-		asm("svc 0");
+		SVC_Handler();
 		while(1)
 		{
-				*GPIOA_ODR = 0x20;
+			/*	*GPIOA_ODR = 0x20;
 				delay(2000000);
 				*GPIOA_ODR = 0x0;
 				delay(2000000);
-
+*/
 		}
 }
 
