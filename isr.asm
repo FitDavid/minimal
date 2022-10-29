@@ -1,5 +1,11 @@
 .global SysTick_Handler
 .global SVC_Handler
+.arch armv7e-m
+.syntax unified
+.thumb
+.thumb_func
+.fpu softvfp
+.type SVC_Handler, %function
 .global HardFault_Handler
 .global BusFault_Handler
 .global UsageFault_Handler

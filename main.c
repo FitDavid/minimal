@@ -1,6 +1,6 @@
 #include "main.h"
 
-uint32_t *vtable[100] __attribute__((section(".isr_vector"))) =
+uint32_t *vtable[16] __attribute__((section(".isr_vector"),aligned(4))) =
 {
 		[0] = (uint32_t *)SRAM_END, // MSP
 		[1] = (uint32_t *)main,
@@ -28,13 +28,16 @@ int main()
 		// disable fpu
 		*RCC_AHB1ENR = 0x1;
 		*GPIOA_MODER |= 0x400;
-		asm("svc 0 \n\t");
-		while(1)
+		if(vtable[11] != (uint32_t*)SVC_Handler)
 		{
-				*GPIOA_ODR = 0x20;
-				delay(2000000);
-				*GPIOA_ODR = 0x0;
-				delay(2000000);
+
+				while(1)
+				{
+						*GPIOA_ODR = 0x20;
+						delay(2000000);
+						*GPIOA_ODR = 0x0;
+						delay(2000000);
+				}
 		}
 }
 
