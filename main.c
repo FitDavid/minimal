@@ -28,7 +28,6 @@ int main()
 		// disable fpu
 		*RCC_AHB1ENR = 0x1;
 		*GPIOA_MODER |= 0x400;
-		SVC_Handler();
 		asm("svc 0 \n\t");
 		while(1)
 		{
@@ -36,7 +35,6 @@ int main()
 				delay(2000000);
 				*GPIOA_ODR = 0x0;
 				delay(2000000);
-
 		}
 }
 

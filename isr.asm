@@ -6,7 +6,6 @@
 .arch armv7e-m
 .syntax unified
 .thumb
-.equ RETADDR, 6*4
 .equ GPIO_ODR, 0x40020014
 
 
@@ -16,8 +15,11 @@ BusFault_Handler:
 HardFault_Handler:
 UsageFault_Handler:
 SVC_Handler:
-	mov r0, 0x14
-	movt r0,0x4002
-	mov r1, 0x20
-	str r1, [r0]
+	adr r0, .Lthreads
+	msr psp,r0
+	mov r1, 0xFFFD
+	movt r1, 0xFFFF
+	msr control, r1
 	bx lr
+.Lthreads:
+	.word threads
