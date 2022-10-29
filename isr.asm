@@ -1,17 +1,14 @@
 .global SysTick_Handler
+.global SVC_Handler
 .global HardFault_Handler
 .global BusFault_Handler
 .global UsageFault_Handler
-.global SVCall
 .arch armv7e-m
 .syntax unified
 .thumb
 .equ RETADDR, 6*4
 .equ GPIO_ODR, 0x40020014
 
-SVCall:
-	svc 0
-	bx lr
 
 SysTick_Handler:
 	bx lr

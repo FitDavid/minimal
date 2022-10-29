@@ -16,7 +16,6 @@ uint8_t minsp1[STACK_SIZE] __attribute__ ((aligned(8))); // pointer to minimal s
 uint8_t minsp2[STACK_SIZE] __attribute__ ((aligned(8))); // aligned to 8 byte boundary
 
 struct threadtbl_t threads;
-void SVC_Handler(){return;}
 
 int main()
 {
