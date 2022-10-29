@@ -2,11 +2,12 @@
 
 uint32_t *vtable[100] __attribute__((section(".isr_vector"))) =
 {
-		(uint32_t *)SRAM_END, // MSP
-		(uint32_t *)main,
+		[0] = (uint32_t *)SRAM_END, // MSP
+		[1] = (uint32_t *)main,
 		[3] = (uint32_t*) HardFault_Handler,
 		[5] = (uint32_t*) BusFault_Handler,
 		[6] = (uint32_t*) UsageFault_Handler,
+		[10] = (uint32_t *)SVC_Handler,
 		[11] = (uint32_t *)SVC_Handler,
 		[15] = (uint32_t *)SysTick_Handler
 };
@@ -15,6 +16,7 @@ uint8_t minsp1[STACK_SIZE] __attribute__ ((aligned(8))); // pointer to minimal s
 uint8_t minsp2[STACK_SIZE] __attribute__ ((aligned(8))); // aligned to 8 byte boundary
 
 struct threadtbl_t threads;
+void SVC_Handler(){return;}
 
 int main()
 {
@@ -28,13 +30,14 @@ int main()
 		*RCC_AHB1ENR = 0x1;
 		*GPIOA_MODER |= 0x400;
 		SVC_Handler();
+		asm("svc 0 \n\t");
 		while(1)
 		{
-			/*	*GPIOA_ODR = 0x20;
+				*GPIOA_ODR = 0x20;
 				delay(2000000);
 				*GPIOA_ODR = 0x0;
 				delay(2000000);
-*/
+
 		}
 }
 

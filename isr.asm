@@ -1,4 +1,3 @@
-.global SVC_Handler
 .global SysTick_Handler
 .global HardFault_Handler
 .global BusFault_Handler

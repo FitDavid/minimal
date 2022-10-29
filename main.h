@@ -5,7 +5,7 @@ typedef unsigned char uint8_t;
 #define SRAM_BASE   0x20000000
 #define PERIPH_BASE 0x40000000
 
-#define SRAM_SIZE 128*1024
+#define SRAM_SIZE 128ul*1024ul
 #define SRAM_END (SRAM_BASE + SRAM_SIZE)
 
 #define APB1PERIPH_BASE       PERIPH_BASE
@@ -24,8 +24,8 @@ typedef unsigned char uint8_t;
 #define RCC_BASE              (AHB1PERIPH_BASE + 0x3800UL)
 
 #define RCC_AHB1ENR ((uint32_t *)(RCC_BASE + 0x30UL))
-#define GPIOA_MODER ((uint32_t *)(GPIOA_BASE + 0x00))
-#define GPIOA_ODR ((uint32_t *)(GPIOA_BASE + 0x14))
+#define GPIOA_MODER ((uint32_t *)(GPIOA_BASE + 0x00ul))
+#define GPIOA_ODR ((uint32_t *)(GPIOA_BASE + 0x14ul))
 
 #define STACK_SIZE 512*4
 #define NTHREADS 2
