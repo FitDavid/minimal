@@ -4,19 +4,13 @@ uint32_t *vtable[100] __attribute__((section(".isr_vector"))) =
 {
 		[0] = (uint32_t *)SRAM_END, // MSP
 		[1] = (uint32_t *)main,
-		[3] = (uint32_t*) HardFault_Handler,
-		[5] = (uint32_t*) BusFault_Handler,
-		[6] = (uint32_t*) UsageFault_Handler,
-		[10] = (uint32_t *)SVC_Handler,
-		[11] = (uint32_t *)SVC_Handler,
-		[15] = (uint32_t *)SysTick_Handler
+		[11] = (uint32_t *)SVC_Handler
 };
 
 uint8_t minsp1[STACK_SIZE] __attribute__ ((aligned(8))); // pointer to minimal sp
 uint8_t minsp2[STACK_SIZE] __attribute__ ((aligned(8))); // aligned to 8 byte boundary
 
 struct threadtbl_t threads;
-void SVC_Handler(){return;}
 
 int main()
 {

@@ -57,10 +57,5 @@ struct threadtbl_t
 int main();
 void ledon();
 void ledoff();
-void HardFault_Handler();
-void BusFault_Handler();
-void UsageFault_Handler();
-void SVC_Handler();
-void SysTick_Handler();
-void SVCall();
+extern void SVC_Handler();
 void delay(volatile uint32_t);

@@ -1,26 +1,33 @@
-.global SysTick_Handler
-.global HardFault_Handler
-.global BusFault_Handler
-.global UsageFault_Handler
-.global SVCall
-.arch armv7e-m
-.syntax unified
-.thumb
-.equ RETADDR, 6*4
-.equ GPIO_ODR, 0x40020014
-
-SVCall:
-	svc 0
-	bx lr
-
-SysTick_Handler:
-	bx lr
-BusFault_Handler:
-HardFault_Handler:
-UsageFault_Handler:
+	.cpu cortex-m4
+	.eabi_attribute 20, 1
+	.eabi_attribute 21, 1
+	.eabi_attribute 23, 3
+	.eabi_attribute 24, 1
+	.eabi_attribute 25, 1
+	.eabi_attribute 26, 1
+	.eabi_attribute 30, 6
+	.eabi_attribute 34, 1
+	.eabi_attribute 18, 4
+	.file	"isr.c"
+	.text
+	.align	1
+	.global	SVC_Handler
+	.arch armv7e-m
+	.syntax unified
+	.thumb
+	.thumb_func
+	.fpu softvfp
+	.type	SVC_Handler, %function
 SVC_Handler:
-	mov r0, 0x14
-	movt r0,0x4002
-	mov r1, 0x20
-	str r1, [r0]
-	bx lr
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	@ link register save eliminated.
+	push	{r7}
+	add	r7, sp, #0
+	nop
+	mov	sp, r7
+	@ sp needed
+	pop	{r7}
+	bx	lr
+	.size	SVC_Handler, .-SVC_Handler
+	.ident	"GCC: (15:10.3-2021.07-4) 10.3.1 20210621 (release)"
