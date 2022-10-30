@@ -14,16 +14,18 @@ struct threadtbl_t threads;
 
 int main()
 {
-		struct stackframe_t * sfledon = (struct stackframe_t*)minsp1 + STACK_SIZE - sizeof(struct stackframe_t);
-		struct stackframe_t  * sfledoff = (struct stackframe_t*)minsp2 + STACK_SIZE - sizeof(struct stackframe_t);
-		sfledon->retaddr = (uint32_t*)ledon; //
-		sfledoff->retaddr = (uint32_t*)ledoff; //
-		threads.tbl[0].sp = (uint32_t*) sfledon;
-		threads.tbl[1].sp = (uint32_t*) sfledoff;
-		// disable fpu
+		struct stackframe_t * sp1 = (struct stackframe_t*)(minsp1 + STACK_SIZE - sizeof(struct stackframe_t));
+		struct stackframe_t  * sp2 = (struct stackframe_t*)(minsp2 + STACK_SIZE - sizeof(struct stackframe_t));
+		sp1->retaddr = (uint32_t*)ledon; //
+		//sp1->r14 = (uint32_t)ledon;
+		sp1->xpsr = 1ul << 24ul;
+		sp2->retaddr = (uint32_t*)ledoff; //
+		//sp2->r14 = (uint32_t)ledon;
+		sp2->xpsr = 1ul << 24ul;
+		threads.tbl[0].sp = (uint32_t*) sp1;
+		threads.tbl[1].sp = (uint32_t*) sp2;
 		*RCC_AHB1ENR = 0x1;
 		*GPIOA_MODER |= 0x400;
-		SVC_Handler();
 		asm("svc 0 \n\t");
 		while(1)
 		{
@@ -31,7 +33,6 @@ int main()
 				delay(2000000);
 				*GPIOA_ODR = 0x0;
 				delay(2000000);
-
 		}
 }
 

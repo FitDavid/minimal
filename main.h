@@ -1,9 +1,9 @@
 typedef unsigned long uint32_t;
 typedef unsigned char uint8_t;
 
-#define FLASH_BASE  0x08000000
-#define SRAM_BASE   0x20000000
-#define PERIPH_BASE 0x40000000
+#define FLASH_BASE  0x08000000ul
+#define SRAM_BASE   0x20000000ul
+#define PERIPH_BASE 0x40000000ul
 
 #define SRAM_SIZE 128ul*1024ul
 #define SRAM_END (SRAM_BASE + SRAM_SIZE)
@@ -27,7 +27,7 @@ typedef unsigned char uint8_t;
 #define GPIOA_MODER ((uint32_t *)(GPIOA_BASE + 0x00ul))
 #define GPIOA_ODR ((uint32_t *)(GPIOA_BASE + 0x14ul))
 
-#define STACK_SIZE 512*4
+#define STACK_SIZE 512*4 // bytes
 #define NTHREADS 2
 
 struct stackframe_t

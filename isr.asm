@@ -22,12 +22,13 @@ SVC_Handler:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
 	@ link register save eliminated.
-	push	{r7}
-	add	r7, sp, #0
-	nop
-	mov	sp, r7
-	@ sp needed
-	pop	{r7}
+	ldr r0, Lthreads
+	msr psp, r0
+	ldr r1, Llr
+	mov lr, r1
 	bx	lr
+Lthreads:
+	.word threads
+Llr:
+	.word 0xFFFFFFFD
 	.size	SVC_Handler, .-SVC_Handler
-	.ident	"GCC: (15:10.3-2021.07-4) 10.3.1 20210621 (release)"
