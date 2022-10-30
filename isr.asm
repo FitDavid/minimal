@@ -52,8 +52,12 @@ Llr:
 	.type	SysTick_Handler, %function
 SysTick_Handler:
 	ldr r0, Lthreads
-	ldr r1, [r0, #4]
-	msr psp, r1
-	
+	ldr r1, [r0, #8] @ r1 = threads.running
+	add r1, #1
+	ands r1, r1, #1
+	ite eq
+	ldreq r2, [r0]
+	ldrne r2, [r0, #4]
+	msr psp, r2
 	bx lr
 	.size SysTick_Handler, .-SysTick_Handler

@@ -11,7 +11,7 @@ uint32_t *vtable[100] __attribute__((section(".isr_vector"))) =
 uint8_t minsp1[STACK_SIZE] __attribute__ ((aligned(8))); // pointer to minimal sp
 uint8_t minsp2[STACK_SIZE] __attribute__ ((aligned(8))); // aligned to 8 byte boundary
 
-struct threadtbl_t threads;
+struct threadtbl_t threads __attribute__ ((aligned(4)));
 
 int main()
 {
