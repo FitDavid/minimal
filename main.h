@@ -49,7 +49,7 @@ struct thread_t
 
 struct threadtbl_t
 {
-	struct thread_t tbl[NTHREADS];
+	struct thread_t tbl[NTHREADS] ;
 	uint32_t running;
 	uint32_t lock;
 };

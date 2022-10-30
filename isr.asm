@@ -10,7 +10,7 @@
 	.eabi_attribute 18, 4
 	.file	"isr.c"
 	.text
-	.align	1
+	.align 2	
 	.global	SVC_Handler
 	.arch armv7e-m
 	.syntax unified
@@ -28,12 +28,13 @@ SVC_Handler: @ Enables SysTick and jumps to first task
 	movt r0, #0xF
 	movw r1, #0xE014
 	movt r1, #0xE000
-	str r0, [r1] @ SYST_RVR = 0xFFFF_FFFF (SysTick Reload Value Register)
+	str r0, [r1] @ SYST_RVR = 0x000F_FFFF (SysTick Reload Value Register)
 	mov r0, #3
 	mov r1, #0xE010
 	movt r1, #0xE000
 	str r0, [r1] @ SYST_CSR = 0x3 (SysTick Control and Status Register)
 	bx	lr
+	.align 4
 Lthreads:
 	.word threads
 Llr:
@@ -48,10 +49,13 @@ Llr:
 	.fpu softvfp
 	.type	SysTick_Handler, %function
 SysTick_Handler:
-	mov r0, 0x0014
-	movt r0, 0x4002
-	ldr r1, [r0]
-	eor r1, r1, #0x20
-	str r1, [r0] 
+	ldr.w r0, Lthreads
+	ldr r1, [r0, #8] @ r1 = threads.running
+	add r1, #1
+	ands r1, r1, #1
+	ite eq
+	ldreq r2, [r0]
+	ldrne r2, [r0, #4]
+	msr psp, r2
 	bx lr
 	.size SysTick_Handler, .-SysTick_Handler

@@ -39,7 +39,7 @@ void ledon()
 {
 		while(1)
 		{
-				//*GPIOA_ODR = 0x20;
+				*GPIOA_ODR = 0x20;
 		}
 }
 
