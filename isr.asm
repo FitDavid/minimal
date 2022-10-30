@@ -18,7 +18,7 @@
 	.thumb_func
 	.fpu softvfp
 	.type	SVC_Handler, %function
-SVC_Handler: @ Enables SysTick and jumps to first task
+SVC_Handler: @ Enables SysTick and jumps to first thread
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
 	@ link register save eliminated.
@@ -51,9 +51,16 @@ Llr:
 	.fpu softvfp
 	.type	SysTick_Handler, %function
 SysTick_Handler:
-	ldr r0, Lthreads
-	ldr r1, [r0, #4]
-	msr psp, r1
-	
+	push {r4, r5}
+	ldr r0, Lthreads @ r0 = &threads
+	ldr r1, [r0, #8] @ r1 = threads.running
+	add r1, #1	
+	and r1, r1, #1 @ we have just 2 threads, threads.running is binary value
+	mov r2, #4
+	mul r3, r1, r2 @ r3 = offset to use in threads.tbl
+	add r4, r0, r3 @ r4 = &threads + threads.running
+	ldr r5, [r4] @ r5 = threads.tbl[threads.running]
+	msr psp, r5 @ context switch
+	pop {r4, r5}	
 	bx lr
 	.size SysTick_Handler, .-SysTick_Handler
