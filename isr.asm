@@ -23,9 +23,10 @@ SVC_Handler:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	@ link register save eliminated.
 	ldr r0, Lthreads
-	msr psp, r0
-	ldr r1, Llr
-	mov lr, r1
+	ldr r1, [r0]
+	msr psp, r1
+	ldr r2, Llr
+	mov lr, r2
 	bx	lr
 Lthreads:
 	.word threads
