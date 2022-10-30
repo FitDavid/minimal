@@ -50,12 +50,13 @@ struct thread_t
 struct threadtbl_t
 {
 	struct thread_t tbl[NTHREADS];
-	uint32_t lock;
 	uint32_t running;
+	uint32_t lock;
 };
 
 int main();
 void ledon();
 void ledoff();
 extern void SVC_Handler();
+extern void SysTick_Handler();
 void delay(volatile uint32_t);
