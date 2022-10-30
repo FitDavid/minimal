@@ -19,23 +19,20 @@
 	.fpu softvfp
 	.type	SVC_Handler, %function
 SVC_Handler: @ Enables SysTick and jumps to first task
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	@ link register save eliminated.
-	mov r0, #0xFFFF
-	movt r0, #0xFFFF
-	mov r1, #0xE014
+	ldr r0, Lthreads
+	ldr r1, [r0]
+	msr psp, r1
+	ldr r2, Llr
+	mov lr, r2
+	movw r0, #0
+	movt r0, #0xF
+	movw r1, #0xE014
 	movt r1, #0xE000
 	str r0, [r1] @ SYST_RVR = 0xFFFF_FFFF (SysTick Reload Value Register)
 	mov r0, #3
 	mov r1, #0xE010
 	movt r1, #0xE000
 	str r0, [r1] @ SYST_CSR = 0x3 (SysTick Control and Status Register)
-	ldr r0, Lthreads
-	ldr r1, [r0]
-	msr psp, r1
-	ldr r2, Llr
-	mov lr, r2
 	bx	lr
 Lthreads:
 	.word threads
@@ -51,9 +48,10 @@ Llr:
 	.fpu softvfp
 	.type	SysTick_Handler, %function
 SysTick_Handler:
-	ldr r0, Lthreads
-	ldr r1, [r0, #4]
-	msr psp, r1
-	
+	mov r0, 0x0014
+	movt r0, 0x4002
+	ldr r1, [r0]
+	eor r1, r1, #0x20
+	str r1, [r0] 
 	bx lr
 	.size SysTick_Handler, .-SysTick_Handler
