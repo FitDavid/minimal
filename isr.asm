@@ -32,7 +32,7 @@ SVC_Handler: @ Enables SysTick and jumps to first task
 	mov r0, #3
 	mov r1, #0xE010
 	movt r1, #0xE000
-	str r0, [r1] @ SYST_CSR = 0x3 (SysTick Control and Status Register)
+	str r0, [r1] @ SYST_CSR = 0x7 (SysTick Control and Status Register)
 	bx	lr
 	.align 4
 Lthreads:
@@ -49,13 +49,17 @@ Llr:
 	.fpu softvfp
 	.type	SysTick_Handler, %function
 SysTick_Handler:
+	mrs r3, psp
 	ldr.w r0, Lthreads
 	ldr r1, [r0, #8] @ r1 = threads.running
 	add r1, #1
 	ands r1, r1, #1
-	ite eq
+	ittee eq
 	ldreq r2, [r0]
+	streq r3, [r0, #4]
 	ldrne r2, [r0, #4]
+	strne r3, [r0]
 	msr psp, r2
+	str r1, [r0, #8] @ threads.running = r1
 	bx lr
 	.size SysTick_Handler, .-SysTick_Handler

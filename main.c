@@ -56,3 +56,19 @@ void delay(volatile uint32_t count)
 		while(count--);
 }
 
+void _start()
+{
+	_init_data();
+	_init_bss();
+	main();
+}
+
+void _init_data()
+{
+	
+}
+
+void _init_bss()
+{
+
+}
