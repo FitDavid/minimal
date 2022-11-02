@@ -5,7 +5,6 @@ MEMORY
 }
 
 ENTRY(_start)
-_sidata = LOADADDR(.data);
 
 SECTIONS
 {
@@ -16,6 +15,7 @@ SECTIONS
 		KEEP(*(.isr_vector))
 	} >FLASH
 
+	_sidata = LOADADDR(.data);
 	.data : ALIGN(4)
 	{
 		. = ALIGN(4);
@@ -25,7 +25,7 @@ SECTIONS
 		_edata = .;
 	} >SRAM AT>FLASH
 
-	.bss (NOLOAD) : ALIGN(4)
+	.bss : ALIGN(4)
 	{
 		_sbss = .;
 		*(.bss)

@@ -28,13 +28,13 @@ int main()
 	threads.tbl[1].sp = (uint32_t*) sp2;
 	*RCC_AHB1ENR = 0x1;
 	*GPIOA_MODER |= 0x400;
-	if(varbss == 0)
+	if(varbss == 5)
 	{
-		time = 0xFFFFF;
+		time = 0x500000;
 	}
 	else
 	{
-		time = 0xFFFFFF;
+		time = 0xFFFFF;
 	}
 	//asm("svc 0 \n\t");
 	while(1)
@@ -78,6 +78,7 @@ void _init_data(uint32_t* sidata, uint32_t* sdata, uint32_t* edata)
 {
 	while(sdata < edata)
 	{
+		if(*sidata == 0xA5) varbss = 5;
 		*sdata++ = *sidata++;
 	}
 }
