@@ -26,25 +26,33 @@ typedef unsigned long uint32_t;
 #define GPIOA_MODER ((uint32_t *)(GPIOA_BASE + 0x00))
 #define GPIOA_ODR ((uint32_t *)(GPIOA_BASE + 0x14))
 
-int main();
+int min();
 void SVC_Handler();
 void SysTick_Handler();
 void delay(volatile uint32_t);
+uint32_t vardata = 0xA5;
+//uint32_t vardata2 = 0xA6;
+//uint32_t vardata3 = 0xA7;
+//uint32_t varbss;
+//uint32_t varbss2;
 
 uint32_t *vtable[100] __attribute__((section(".isr_vector"))) =
 {
 		(uint32_t *)SRAM_END, // MSP
-		(uint32_t *)main,
+		(uint32_t *)min,
 		[11] = (uint32_t *)SVC_Handler,
 		[15] = (uint32_t *)SysTick_Handler
 };
 
 
-int main()
+int min()
 {
 		*RCC_AHB1ENR = 0x1;
 		*GPIOA_MODER |= 0x400;
-
+		//if(vardata2 == 0xA6 && vardata3 == 0xA7 && varbss == 0 && varbss2 == 0) vardata2 = 0;
+		//vardata == 0xA5;
+		if(vardata)
+		{
 		while(1)
 		{
 				*GPIOA_ODR = 0x20;
@@ -53,6 +61,8 @@ int main()
 				delay(2000000);
 
 		}
+		}
+	return 0;
 }
 
 
@@ -69,4 +79,34 @@ void SVC_Handler()
 void delay(volatile uint32_t count)
 {
 		while(count--);
+}
+
+/*-----------Init routine------------*/
+
+/*----linker defined variables----*/
+extern uint32_t _sidata, _sdata, _edata;
+extern uint32_t _sbss, _ebss;
+
+
+void _init_data(uint32_t* sidata, uint32_t* sdata, uint32_t* edata)
+{
+	while(sdata < edata)
+	{
+		*sdata++ = *sidata++;
+	}
+}
+
+void _init_bss(uint32_t* sbss, uint32_t* ebss)
+{
+	while(sbss < ebss)
+	{
+		*sbss = 0;
+	}
+}
+
+void _start()
+{
+	_init_data(&_sidata, &_sdata, &_edata);
+	_init_bss(&_sbss, &_ebss);
+	min();
 }
