@@ -38,20 +38,22 @@ struct stackframe_t
 	uint32_t r3; // 3
 	uint32_t r12; // 4
 	uint32_t r14; // LR, 5
-	uint32_t* retaddr; // 6
-	uint32_t xpsr;
+	uint32_t* retaddr; // 6 return address
+	uint32_t xpsr; // program status word
 };
 
+// this is for later use
 struct thread_t
 {
 	uint32_t * sp;
 };
 
+// Type for the threadtable
 struct threadtbl_t
 {
 	struct thread_t tbl[NTHREADS];
-	uint32_t running;
-	uint32_t lock;
+	uint32_t running; // holds the index of the currently running process
+	uint32_t lock; // for future use
 };
 
 int main();
@@ -60,3 +62,4 @@ void ledoff();
 extern void SVC_Handler();
 extern void SysTick_Handler();
 void delay(volatile uint32_t);
+void _start();
