@@ -75,7 +75,7 @@ void _init_bss(uint32_t* sbss, uint32_t* ebss)
 {
 	while(sbss < ebss)
 	{
-		*sbss = 0;
+		*sbss++ = 0;
 	}
 }
 
