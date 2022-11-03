@@ -56,3 +56,32 @@ void delay(volatile uint32_t count)
 		while(count--);
 }
 
+/*-----------Init routine------------*/
+
+/*----linker defined variables----*/
+extern uint32_t _sidata, _sdata, _edata;
+extern uint32_t _sbss, _ebss;
+
+
+void _init_data(uint32_t* sidata, uint32_t* sdata, uint32_t* edata)
+{
+	while(sdata < edata)
+	{
+		*sdata++ = *sidata++;
+	}
+}
+
+void _init_bss(uint32_t* sbss, uint32_t* ebss)
+{
+	while(sbss < ebss)
+	{
+		*sbss = 0;
+	}
+}
+
+void _start()
+{
+	_init_data(&_sidata, &_sdata, &_edata);
+	_init_bss(&_sbss, &_ebss);
+	main();
+}
