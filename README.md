@@ -1,4 +1,4 @@
-This is a minimal example of how to do task swithing on a Cortex-M3 or Cortex-M4. Tested on Nucleo-F446RE evaluation board.
+This is a minimal example of how to do task swithing on a Cortex-M3 or Cortex-M4. Tested on Nucleo-F446RE evaluation board. It is interesting for students of computer science who want to know what the core of a (real time) operating system does, but doesn't want to go through many 1000s of lines of code deep down in the kernel.
 
 # Installation
 ## Prerequisites
